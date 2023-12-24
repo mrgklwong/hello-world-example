@@ -47,7 +47,7 @@ runs:
     - run: echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ inputs.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
       shell: bash
     - run: |
-        yes Y | sdkmanager --licenses
+        echo Y | sdkmanager --licenses
         sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES }}
       shell: bash
     - run: echo "no" | avdmanager --verbose create avd --force -n ${{ inputs.EMULATOR_NAME }} --abi "${{ inputs.ANDROID_TARGET }}/${{ inputs.ANDROID_ARCH }}" -k "system-images;android-${{ inputs.API_LEVEL }};${{ inputs.ANDROID_TARGET }};${{ inputs.ANDROID_ARCH }}"
