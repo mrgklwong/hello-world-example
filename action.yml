@@ -16,35 +16,15 @@ inputs:
   API_LEVEL:
     description: 'user 28 for now'
     required: false
-    default: 28
+    default: '28'
   ANDROID_BUILD_TOOLS_VERSION:
     description: 'use 28.0.3 for now'
     required: false
     default: 28.0.3
-  ANDROID_SDK_PACKAGES1:
-    description: 'Use system-images;android-28;google_apis_playstore;x86_64'
-    required: false
-    default: 'system-images;android-28;google_apis_playstore;x86_64'
-  ANDROID_SDK_PACKAGES2:
-    description: 'Use platforms;android-28'
-    required: false
-    default: 'platforms;android-28'
-  ANDROID_SDK_PACKAGES3:
-    description: 'Use build-tools;28.0.3 '
-    required: false
-    default:  'build-tools;28.0.3'
-  ANDROID_SDK_PACKAGES4:
-    description: 'Use platform-tools emulator for now'
-    required: false
-    default: 'platform-tools'
-  ANDROID_SDK_PACKAGES5:
-    description: 'Use emulator'
-    required: false
-    default: 'emulator'
   EMULATOR_TIMEOUT:
     description: 'User 350 for now'
     required: false
-    default: 350
+    default: '350'
   EMULATOR_NAME:
     description: 'use nexus for now'
     required: false
@@ -65,10 +45,10 @@ runs:
     - run: |
         echo Y | sdkmanager --licenses
         sdkmanager --install 'system-images;android-28;google_apis_playstore;x86_64'
-        sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES2 }}
-        sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES3 }}
-        sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES4 }}
-        sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES5 }}
+        sdkmanager --install 'platforms;android-28'
+        sdkmanager --install 'build-tools;28.0.3'
+        sdkmanager --install 'platform-tools'
+        sdkmanager --install 'emulator'
       shell: bash
     - run: echo "no" | avdmanager --verbose create avd --force -n ${{ inputs.EMULATOR_NAME }} --abi "${{ inputs.ANDROID_TARGET }}/${{ inputs.ANDROID_ARCH }}" -k "system-images;android-${{ inputs.API_LEVEL }};${{ inputs.ANDROID_TARGET }};${{ inputs.ANDROID_ARCH }}"
       shell: bash
