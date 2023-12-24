@@ -5,10 +5,6 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
@@ -16,7 +12,7 @@ runs:
       shell: bash
     - run: echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
       shell: bash
-    - run: yes Y | sdkmanager --licenses
+    - run: yes | sdkmanager --licenses
       shell: bash
     - run: sdkmanager --install ${ANDROID_SDK_PACKAGES}
       shell: bash
@@ -37,9 +33,6 @@ runs:
     - run: rm file.zip
       shell: bash
     - run: java -jar app-crawler/crawl_launcher.jar --apk-file ${{inputs.app-location}} --android-sdk $ANDROID_HOME/ --app-package-name ${{ inputs.app-package-name }}
-      shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
       shell: bash
     - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
       shell: bash
