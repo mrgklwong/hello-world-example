@@ -12,9 +12,9 @@ runs:
       shell: bash
     - run: echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
       shell: bash
-    - run: yes | sdkmanager --licenses
-      shell: bash
-    - run: sdkmanager --install ${ANDROID_SDK_PACKAGES}
+    - run: |
+        yes Y | sdkmanager --licenses
+        sdkmanager --install ${ANDROID_SDK_PACKAGES}
       shell: bash
     - run: echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
       shell: bash
