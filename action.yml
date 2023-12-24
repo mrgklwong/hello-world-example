@@ -64,7 +64,7 @@ runs:
       shell: bash
     - run: |
         echo Y | sdkmanager --licenses
-        sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES1 }}
+        sdkmanager --install 'system-images;android-28;google_apis_playstore;x86_64'
         sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES2 }}
         sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES3 }}
         sdkmanager --install ${{ inputs.ANDROID_SDK_PACKAGES4 }}
