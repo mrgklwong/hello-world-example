@@ -32,7 +32,7 @@ inputs:
   app-location:
     description: 'Provide your app location'
     required: true
-    default: /example/debug.apk
+    default: debug.apk
   app-package-name:
     description: 'Provide your app package name'
     required: true
@@ -66,3 +66,9 @@ runs:
       shell: bash
     - run: java -jar app-crawler/crawl_launcher.jar --apk-file ${{inputs.app-location}} --android-sdk $ANDROID_HOME/ --app-package-name ${{ inputs.app-package-name }}
       shell: bash
+      continue-on-error: true
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v3
+      with:
+        name: Crawl-Report.log
+        path: app-crawler/crawl_output/*.*
