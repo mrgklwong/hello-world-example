@@ -13,6 +13,25 @@ runs:
   using: "composite"
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
+    - run: echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
+      shell: bash
+    - run: |
+       yes Y | sdkmanager --licenses
+       sdkmanager --install ${ANDROID_SDK_PACKAGES}
+    - run: |
+       echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
+    - run: |
+       chmod +x ./start_emu_headless.sh
+       EMULATOR_TIMEOUT=$EMULATOR_TIMEOUT EMULATOR_NAME=$EMULATOR_NAME ./start_emu_headless.sh
+    - run: |
+       chmod a+x ./check_emu.sh
+       ./check_emu.sh
+    - run: |
+       curl -sS https://dl.google.com/appcrawler/beta1/app-crawler.zip > file.zip
+       unzip file.zip                                 
+       rm file.zip
+    - run: |
+       java -jar app-crawler/crawl_launcher.jar --apk-file ${{inputs.app-location}} --android-sdk $ANDROID_HOME/ --app-package-name ${{ inputs.app-package-name }}
       shell: bash
     - id: random-number-generator
       run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
